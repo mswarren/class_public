@@ -548,9 +548,9 @@ int input_init(
                errmsg,
                "Your choice of a fluid with (w0,wa)=(-1,0) is not valid due to instabilities in the unphysical perturbations of such a fluid. Try instead with a plain cosmological constant");
 	       
-    class_test(pba->w0_fld+pba->w0_fld>=1./3.,
+    class_test(pba->w0_fld+pba->wa_fld>=1./3.,
                errmsg,
-               "Your choice for w0_fld+wa_fld=%g is suspicious, ther would not be radiation domination at early times\n",
+               "Your choice for w0_fld+wa_fld=%g is suspicious, there would not be radiation domination at early times\n",
                pba->w0_fld+pba->wa_fld);
 	       
 
