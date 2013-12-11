@@ -69,7 +69,7 @@ endif
 
 TOOLS = growTable.o dei_rkck.o sparse.o evolver_rkck.o  evolver_ndf15.o arrays.o parser.o quadrature.o hyperspherical.o common.o
 
-SOURCE = input.o background.o thermodynamics.o perturbations.o transfer.o primordial.o spectra.o trg.o nonlinear.o lensing.o
+SOURCE = input.o background.o thermodynamics.o perturbations.o transfer.o primordial.o spectra.o trg.o nonlinear.o lensing.o version.o
 
 INPUT = input.o
 
@@ -161,3 +161,12 @@ tar: $(C_ALL) $(C_TEST) $(H_ALL) $(PRE_ALL) $(INI_ALL) $(MISC_FILES) $(HYREC) $(
 
 clean: .base
 	rm -rf $(WRKDIR);
+
+.PHONY: version.proto
+version.proto:
+	@echo char Version\[\] = \"`git describe --tags --dirty`\"\; > version.proto
+	@echo char Compiled_date\[\] = __DATE__\; >> version.proto
+	@echo char Compiled_time\[\] = __TIME__\; >> version.proto
+
+version.c: version.proto
+	@cmp -s $< $@ || cp -p $< $@

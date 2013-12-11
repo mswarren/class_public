@@ -9,3 +9,5 @@ libclass.a
 python/classy.c
 python/*.pyc
 python/build/
+version.proto
+version.c

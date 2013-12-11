@@ -213,6 +213,44 @@ int input_init(
       and interpret each of them, and tune accordingly the relevant
       input parameters */
 
+  /* Read these first so background_verbose is available when diagnostics are written */
+  /** (g) amount of information sent to standard output (none if all set to zero) */
+
+  class_read_int("background_verbose",
+                 pba->background_verbose);
+
+  class_read_int("thermodynamics_verbose",
+                 pth->thermodynamics_verbose);
+
+  class_read_int("perturbations_verbose",
+                 ppt->perturbations_verbose);
+
+  class_read_int("transfer_verbose",
+                 ptr->transfer_verbose);
+
+  class_read_int("primordial_verbose",
+                 ppm->primordial_verbose);
+
+  class_read_int("spectra_verbose",
+                 psp->spectra_verbose);
+
+  class_read_int("nonlinear_verbose",
+                 pnl->nonlinear_verbose);
+
+  class_read_int("lensing_verbose",
+                 ple->lensing_verbose);
+
+  class_read_int("output_verbose",
+                 pop->output_verbose);
+
+  if (pba->background_verbose) {
+      extern char Version[];
+      extern char Compiled_date[];
+      extern char Compiled_time[];
+      printf("Running CLASS version %s\n", Version);
+      printf("Compiled %s %s\n", Compiled_date, Compiled_time);
+  }
+
   /** (a) background parameters */
 
   /* h (dimensionless) and [H0/c] in Mpc^{-1} = h / 2999.7 */
@@ -1445,35 +1483,6 @@ int input_init(
       }
     }
   }
-
-  /** (g) amount of information sent to standard output (none if all set to zero) */
-
-  class_read_int("background_verbose",
-                 pba->background_verbose);
-
-  class_read_int("thermodynamics_verbose",
-                 pth->thermodynamics_verbose);
-
-  class_read_int("perturbations_verbose",
-                 ppt->perturbations_verbose);
-
-  class_read_int("transfer_verbose",
-                 ptr->transfer_verbose);
-
-  class_read_int("primordial_verbose",
-                 ppm->primordial_verbose);
-
-  class_read_int("spectra_verbose",
-                 psp->spectra_verbose);
-
-  class_read_int("nonlinear_verbose",
-                 pnl->nonlinear_verbose);
-
-  class_read_int("lensing_verbose",
-                 ple->lensing_verbose);
-
-  class_read_int("output_verbose",
-                 pop->output_verbose);
 
   /** (h) all precision parameters */
 
