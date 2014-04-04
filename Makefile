@@ -69,7 +69,7 @@ endif
 
 TOOLS = growTable.o dei_rkck.o sparse.o evolver_rkck.o  evolver_ndf15.o arrays.o parser.o quadrature.o hyperspherical.o common.o
 
-SOURCE = input.o background.o thermodynamics.o perturbations.o transfer.o primordial.o spectra.o trg.o nonlinear.o lensing.o version.o
+SOURCE = input.o background.o thermodynamics.o perturbations.o primordial.o nonlinear.o transfer.o spectra.o lensing.o version.o
 
 INPUT = input.o
 
@@ -167,7 +167,7 @@ tar: $(C_ALL) $(C_TEST) $(H_ALL) $(PRE_ALL) $(INI_ALL) $(MISC_FILES) $(HYREC) $(
 
 clean: .base
 	rm -rf $(WRKDIR);
-<<<<<<< HEAD
+	rm -f libclass.a
 
 .PHONY: version.proto
 version.proto:
@@ -177,6 +177,3 @@ version.proto:
 
 version.c: version.proto
 	@cmp -s $< $@ || cp -p $< $@
-=======
-	rm -f libclass.a
->>>>>>> 6e3a3f2af31357b42cf9edb52fc0ce0ffbb62ef8
