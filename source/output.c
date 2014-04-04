@@ -626,7 +626,9 @@ int output_pk(
                pop->error_message,
                "P(k,z) computed up to z=%f but requested at z=%f. Must increase z_max_pk in precision file.",psp->z_max_pk,pop->z_pk[index_z]);
 
-    if (pop->z_pk_num == 1)
+    if (pop->a_suffix)
+      sprintf(redshift_suffix,"%.04f_",1.0/(1.0+pop->z_pk[index_z]));
+    else if (pop->z_pk_num == 1)
       redshift_suffix[0]='\0';
     else
       sprintf(redshift_suffix,"z%d_",index_z+1);
@@ -917,7 +919,9 @@ int output_pk_nl(
                pop->error_message,
                "P(k,z) computed up to z=%f but requested at z=%f. Must increase z_max_pk in precision file.",psp->z_max_pk,pop->z_pk[index_z]);
 
-    if (pop->z_pk_num == 1)
+    if (pop->a_suffix)
+      sprintf(redshift_suffix,"%.04f_",1.0/(1.0+pop->z_pk[index_z]));
+    else if (pop->z_pk_num == 1)
       redshift_suffix[0]='\0';
     else
       sprintf(redshift_suffix,"z%d_",index_z+1);
@@ -1050,7 +1054,9 @@ int output_tk(
                pop->error_message,
                "T_i(k,z) computed up to z=%f but requested at z=%f. Must increase z_max_pk in precision file.",psp->z_max_pk,pop->z_pk[index_z]);
 
-    if (pop->z_pk_num == 1)
+    if (pop->a_suffix)
+      sprintf(redshift_suffix,"%.04f_",1.0/(1.0+pop->z_pk[index_z]));
+    else if (pop->z_pk_num == 1)
       redshift_suffix[0]='\0';
     else
       sprintf(redshift_suffix,"z%d_",index_z+1);

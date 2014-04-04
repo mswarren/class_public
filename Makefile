@@ -171,7 +171,7 @@ clean: .base
 
 .PHONY: version.proto
 version.proto:
-	@echo char Version\[\] = \"`git describe --tags --dirty`\"\; > version.proto
+	@echo char Git_version\[\] = \"`git describe --tags --dirty`\"\; > version.proto
 	@echo char Compiled_date\[\] = __DATE__\; >> version.proto
 	@echo char Compiled_time\[\] = __TIME__\; >> version.proto
 

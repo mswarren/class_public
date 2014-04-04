@@ -246,14 +246,6 @@ int input_init(
   class_read_int("output_verbose",
                  pop->output_verbose);
 
-  if (pba->background_verbose) {
-      extern char Version[];
-      extern char Compiled_date[];
-      extern char Compiled_time[];
-      printf("Running CLASS version %s\n", Version);
-      printf("Compiled %s %s\n", Compiled_date, Compiled_time);
-  }
-
   /** (a) background parameters */
 
   /* h (dimensionless) and [H0/c] in Mpc^{-1} = h / 2999.7 */
@@ -1569,6 +1561,15 @@ int input_init(
     }
   }
 
+  class_call(parser_read_string(pfc,"a_suffix",&string1,&flag1,errmsg),
+             errmsg,
+             errmsg);
+
+  if ((flag1 == _TRUE_) && ((strstr(string1,"y") != NULL) || (strstr(string1,"Y") != NULL))) {
+    pop->a_suffix = _TRUE_;
+  }
+
+
   /** (f) parameter related to the non-linear spectra computation */
 
   class_call(parser_read_string(pfc,
@@ -2166,6 +2167,7 @@ int input_default_params(
   sprintf(pop->root,"output/");
   pop->write_header = _TRUE_;
   pop->output_format = class_format;
+  pop->a_suffix = _FALSE_;
   pop->write_background = _FALSE_;
   pop->write_thermodynamics = _FALSE_;
   pop->write_primordial = _FALSE_;

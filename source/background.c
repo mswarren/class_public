@@ -247,7 +247,11 @@ int background_init(
 
   /** - in verbose mode, provide some information */
   if (pba->background_verbose > 0) {
-    printf("Running CLASS version %s\n",_VERSION_);
+    extern char Git_version[];
+    extern char Compiled_date[];
+    extern char Compiled_time[];
+    printf("Running CLASS version %s git %s\n",_VERSION_, Git_version);
+    printf("Compiled %s %s\n", Compiled_date, Compiled_time);
     printf("Computing background\n");
 
     /* below we want to inform the user about ncdm species*/

@@ -10,7 +10,7 @@
  * written in output files
  */
 
-#define _Z_PK_NUM_MAX_ 10
+#define _Z_PK_NUM_MAX_ 20
 
 /**
  * Different ways to present output files
@@ -51,6 +51,7 @@ struct output {
 
   enum file_format output_format;
 
+  short a_suffix;
   short write_background;
   short write_thermodynamics;
   short write_primordial;
