@@ -532,6 +532,9 @@ int background_indices(
   /* -> conformal sound horizon */
   class_define_index(pba->index_bg_rs,_TRUE_,index_bg,1);
 
+  /* -> symplectic time integration "drift" */
+  class_define_index(pba->index_bg_drift,_TRUE_,index_bg,1);
+
   /* -> density growth factor in dust universe */
   class_define_index(pba->index_bg_D,_TRUE_,index_bg,1);
 
@@ -557,6 +560,9 @@ int background_indices(
 
   /* -> sound horizon */
   class_define_index(pba->index_bi_rs,_TRUE_,index_bi,1);
+
+  /* -> drift */
+  class_define_index(pba->index_bi_drift,_TRUE_,index_bi,1);
 
   /* -> integral for growth factor */
   class_define_index(pba->index_bi_growth,_TRUE_,index_bi,1);
@@ -1455,6 +1461,7 @@ int background_solve(
     pvecback[pba->index_bg_ang_distance] = pba->a_today*comoving_radius/(1.+pba->z_table[i]);
     pvecback[pba->index_bg_lum_distance] = pba->a_today*comoving_radius*(1.+pba->z_table[i]);
     pvecback[pba->index_bg_rs] = pData[i*pba->bi_size+pba->index_bi_rs];
+    pvecback[pba->index_bg_drift] = pData[i*pba->bi_size+pba->index_bi_drift];
 
     /* -> compute all other quantities depending only on a*/
     class_call(background_functions(pba,pData[i*pba->bi_size+pba->index_bi_a], pba->long_info, pvecback),
@@ -1612,6 +1619,8 @@ int background_initial_conditions(
   /** - compute initial sound horizon, assuming c_s=1/sqrt(3) initially */
   pvecback_integration[pba->index_bi_rs] = pvecback_integration[pba->index_bi_tau]/sqrt(3.);
 
+  pvecback_integration[pba->index_bi_drift] = -11800000; /* arbitrary? */
+
   /** - compute initial value of the integral over dtau/(aH^2),
       assumed to be proportional to a^4 during RD, but with arbitrary
       normalization */
@@ -1684,6 +1693,9 @@ int background_derivs(
 
   /** - calculate rs' = c_s */
   dy[pba->index_bi_rs] = 1./sqrt(3.*(1.+3.*pvecback[pba->index_bg_rho_b]/4./pvecback[pba->index_bg_rho_g]))*sqrt(1.-pba->K*y[pba->index_bi_rs]*y[pba->index_bi_rs]); // TBC: curvature correction
+
+  /** drift' = 1/a */
+  dy[pba->index_bi_drift] = 1./y[pba->index_bi_a];
 
   /** calculate growth' = 1/(aH^2) */
   dy[pba->index_bi_growth] = 1./(y[pba->index_bi_a] * pvecback[pba->index_bg_H] * pvecback[pba->index_bg_H]);

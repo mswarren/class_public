@@ -1792,6 +1792,9 @@ int output_open_background_file(
     class_fprintf_columntitle(*backfile,"(.)rho_fld [Mpc^-2]",pba->has_fld);
     class_fprintf_columntitle(*backfile,"(.)rho_ur [Mpc^-2]",pba->has_ur);
     class_fprintf_columntitle(*backfile,"(.)rho_crit[Mpc^-2]",_TRUE_);
+    class_fprintf_columntitle(*backfile,"drift",_TRUE_);
+    class_fprintf_columntitle(*backfile,"D",_TRUE_);
+    class_fprintf_columntitle(*backfile,"f",_TRUE_);
     fprintf(*backfile,"\n");
   }
 
@@ -1835,6 +1838,9 @@ int output_one_line_of_background(
   class_fprintf_double(backfile,pvecback[pba->index_bg_rho_fld],pba->has_fld);
   class_fprintf_double(backfile,pvecback[pba->index_bg_rho_ur],pba->has_ur);
   class_fprintf_double(backfile,pvecback[pba->index_bg_rho_crit],_TRUE_);
+  class_fprintf_double(backfile,pvecback[pba->index_bg_drift],_TRUE_);
+  class_fprintf_double(backfile,pvecback[pba->index_bg_D],_TRUE_);
+  class_fprintf_double(backfile,pvecback[pba->index_bg_f],_TRUE_);
 
   fprintf(backfile,"\n");
 
