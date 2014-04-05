@@ -112,6 +112,65 @@ int output_init(
                 struct output * pop
                 ) {
 
+    FILE *fp = fopen("cosmology.tbl", "w");
+    int i;
+    double *tks;
+    class_alloc(tks,
+		psp->tr_size*psp->ic_size[psp->index_md_scalars]*sizeof(double),
+		pop->error_message);
+
+    fprintf(fp, "# tau z t H R drift growth_m growth_cdm velfac\n");
+    fprintf(fp, "# sigma8 = %g\n", psp->sigma8);
+
+    /* growth weighted a la Somogi & Smith http://arxiv.org/abs/0910.5220 */
+    for (i=0; i < pba->bt_size; i++) {
+	double *bt = pba->background_table+i*pba->bg_size;
+	double pk, pk_plus, pk_minus, pk_0, *pk_ic=NULL;
+	double tk, tk_0;
+	double a, a_plus, a_minus;
+	double growth, growth_plus, growth_minus;
+	double k = 1.0;
+	double z = pba->z_table[i];
+	double z_plus = pba->z_table[i+1];
+	double z_minus = pba->z_table[i-1];
+	if (z < 450*1.05) {
+	    class_call(spectra_pk_at_k_and_z(pba, ppm, psp, k, z_plus, &pk_plus, pk_ic),
+		       pop->error_message, pop->error_message);
+	    class_call(spectra_pk_at_k_and_z(pba, ppm, psp, k, z_minus, &pk_minus, pk_ic),
+		       pop->error_message, pop->error_message);
+	    class_call(spectra_pk_at_k_and_z(pba, ppm, psp, k, 0.0, &pk_0, pk_ic),
+		       pop->error_message, pop->error_message);
+	    class_call(spectra_pk_at_k_and_z(pba, ppm, psp, k, z, &pk, pk_ic),
+		       pop->error_message, pop->error_message);
+	    class_call(spectra_tk_at_k_and_z(pba, psp, k, 0.0, tks),
+		       pop->error_message, pop->error_message);
+	    tk_0 = tks[psp->index_tr_delta_cdm];
+	    class_call(spectra_tk_at_k_and_z(pba, psp, k, z, tks),
+		       pop->error_message, pop->error_message);
+	    tk = tks[psp->index_tr_delta_cdm];
+	    a = 1.0/(1.0+z);
+	    a_plus = 1.0/(1.0+z_plus);
+	    a_minus = 1.0/(1.0+z_minus);
+	    growth = sqrt(pk/pk_0);
+	    growth_plus = sqrt(pk_plus/pk_0);
+	    growth_minus = sqrt(pk_minus/pk_0);
+	    
+	    fprintf(fp, "%16.14g %16.14g %16.14g %16.14g %16.14g %16.14g %16.14g %16.14g %16.14g\n",
+		    pba->tau_table[i], z,
+		    bt[pba->index_bg_time], 
+		    bt[pba->index_bg_H],
+		    bt[pba->index_bg_conf_distance],
+		    bt[pba->index_bg_drift],
+		    growth,
+		    tk/tk_0,
+		    (a/growth)*(growth_plus-growth_minus)/(a_plus-a_minus) /* Peebles 1980 (14.8) */
+		    );
+	}
+    }
+    free(tks);
+    fclose(fp);
+
+
   /** Summary: */
 
   /** - check that we really want to output at least one file */
