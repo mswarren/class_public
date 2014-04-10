@@ -133,7 +133,7 @@ int output_init(
 	double z = pba->z_table[i];
 	double z_plus = pba->z_table[i+1];
 	double z_minus = pba->z_table[i-1];
-	if (z < 450*1.05) {
+	if (z < psp->z_max_pk && k < exp(psp->ln_k[psp->ln_k_size-1])) {
 	    class_call(spectra_pk_at_k_and_z(pba, ppm, psp, k, z_plus, &pk_plus, pk_ic),
 		       pop->error_message, pop->error_message);
 	    class_call(spectra_pk_at_k_and_z(pba, ppm, psp, k, z_minus, &pk_minus, pk_ic),
